@@ -2,21 +2,51 @@ const express = require('express')
 const router = express.Router()
 const Order = require('../models/Orders')
 
-
 router.post('/api/orderData', async (req, res) => {
-    try {
-        const { order_data, order_date } = req.body;
-        const newOrder = new Order({
-            order_data,
-            order_date,
-        });
-        await newOrder.save();
-        res.status(200).json({ message: 'Order saved successfully' });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal server error' });
+    let data = req.body.order_data
+    await data.splice(0, 0, { Order_date: req.body.order_date })
+    console.log("78908", req.body.email)
+
+    let emailId = await Order.findOne({ 'email': req.body.email })
+    console.log(emailId)
+    if (emailId === null) {
+        try {
+            console.log(data)
+            console.log("78908", req.body.email)
+            await Order.create({
+                email: req.body.email,
+                order_data: [data]
+            }).then(() => {
+                res.json({ success: true })
+            })
+        } catch (error) {
+            console.log(error)
+            res.send("Server Error", error.message)
+        }
+    }
+
+    else {
+        try {
+            await Order.findOneAndUpdate({ email: req.body.email },
+                { $push: { order_data: data } }).then(() => {
+                    res.json({ success: true })
+                })
+        } catch (error) {
+            console.log(error.message)
+            res.send("Server Error", error.message)
+        }
     }
 });
+
+router.post('/myOrderData', async (req, res) => {
+    try {
+        console.log(req.body.email)
+        let emailId = await Order.findOne({ 'email': req.body.email })
+        res.json({ orderData: emailId })
+    } catch (error) {
+        res.send("Error", error.message)
+    }
+})
 
 module.exports = router;
 

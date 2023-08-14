@@ -34,7 +34,7 @@ export default function MyOrders() {
                 <div className='row'>
                     {orders !== {} ? Array(orders).map(data => {
                         return (
-                            data.orderData ? data.orderData.order_data.slice(0).reverse().map((item) => {
+                            data.orders ? data.orders.order_data.slice(0).reverse().map((item) => {
                                 return (
                                     item.map((arrayData) => {
                                         return (
@@ -47,7 +47,7 @@ export default function MyOrders() {
                                                     <div className="card-body">
                                                         <h5 className="card-title">{arrayData.name}</h5>
                                                         <div className='container w-100 p-0' style={{ height: "38px" }}>
-                                                            <span className='m-1'>{arrayData.quantityty}</span>
+                                                            <span className='m-1'>{arrayData.quantity}</span>
                                                             <span className='m-1'>{arrayData.size}</span>
                                                             <span className='m-1'>{data}</span>
                                                             <div className=' d-inline ms-2 h-100 w-20 fs-5' >

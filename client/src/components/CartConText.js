@@ -8,8 +8,7 @@ const cartReducer = (state, action) => {
   switch (action.type) {
     case "ADD_TO_CART":
       const totalPrice = action.quantity * action.price; // Calculate the total price
-      const newItem =
-      {
+      return [...state, {
         id: action.id,
         name: action.name,
         quantity: action.quantity,
@@ -17,8 +16,7 @@ const cartReducer = (state, action) => {
         price: action.price,
         img: action.img,
         totalPrice: totalPrice
-      };
-      return [...state, newItem]
+      }]
 
     case "REMOVE_FROM_CART":
       let newArr = [...state]
@@ -30,7 +28,7 @@ const cartReducer = (state, action) => {
       return newArray // Clear the cart array
 
     case "UPDATE":
-      let arr = [...state, newItem]
+      let arr = [...state]
       arr.find((food, index) => {
         if (food.id === action.id) {
           console.log(food.quantity, parseInt(action.quantity), action.price + food.price)
